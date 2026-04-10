@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+from datetime import timedelta
 
 load_dotenv()
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'app',
     'djoser',
     'corsheaders',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -78,20 +80,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'schoolexample.wsgi.application'
 
+AUTH_USER_MODEL = 'user.User'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "schoolexample",
+#         'USER': "postgres", 
+#         'PASSWORD': "Gwapo123", 
+#         'HOST': "localhost",  # Or the remote database host's IP/domain name
+#         'PORT': "5432",  # Default PostgreSQL port
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "schoolexample",
-        'USER': "postgres", 
-        'PASSWORD': "Gwapo123", 
-        'HOST': "localhost",  # Or the remote database host's IP/domain name
-        'PORT': "5432",  # Default PostgreSQL port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -136,3 +148,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,  # enables confirm password
+    'SERIALIZERS': {
+        'user_create': 'user.serializers.UserCreateSerializer',
+        'user': 'user.serializers.UserSerializer',
+    },
+}
