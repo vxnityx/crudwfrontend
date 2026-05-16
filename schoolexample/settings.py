@@ -150,7 +150,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", "http://localhost:8082", "exp://192.168.0.85:8082"
+    "http://localhost:3000", "http://localhost:8082", "exp://192.168.0.85:8082", "https://crudwfrontend-production.up.railway.app"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
